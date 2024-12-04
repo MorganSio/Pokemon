@@ -1,0 +1,114 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+header {
+  background-color: #ffcc00;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 50px;
+}
+
+header input {
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+header button {
+  padding: 10px;
+  font-size: 16px;
+  margin-left: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+header button:hover {
+  background-color: #0056b3;
+}
+
+main {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 15px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.card h3 {
+  font-size: 18px;
+  margin: 10px 0 5px;
+}
+
+button {
+  padding: 10px;
+  font-size: 16px;
+  margin-left: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  transform: translateY(2px);
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px #007bff;
+}
+
+input[type="text"] {
+  padding: 15px;
+  margin-top: 15px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 60%;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px #007bff;
+  border: 1px solid #007bff;
+}
+
+
+
