@@ -1,11 +1,17 @@
-// URL de base de l'API et clé
+import translations from './translations.js';
+
 const API_BASE_URL = "https://api.pokemontcg.io/v2";
 const API_KEY = "ce5a3fd3-f53d-4f27-b929-2184b66a34d7";
 
-// Élément pour afficher les résultats
 const cardContainer = document.getElementById("cardContainer");
 const searchInput = document.getElementById("search");
 const searchButton = document.getElementById("searchButton");
+
+// Fonction pour traduire les mots-clés français en anglais
+function translateQuery(query) {
+  const lowerCaseQuery = query.toLowerCase();
+  return translations[lowerCaseQuery] || query;
+}
 
 // Fonction pour charger les cartes depuis l'API
 async function fetchCards(query = "") {
@@ -55,8 +61,54 @@ function displayCards(cards) {
 // Écouteur pour la recherche
 searchButton.addEventListener("click", () => {
   const query = searchInput.value.trim();
-  fetchCards(query);
+  const translatedQuery = translateQuery(query); // Traduire avant d'envoyer
+  fetchCards(translatedQuery);
 });
 
-// Charger les cartes par défaut (exemple : une recherche vide affiche les premières cartes)
+// Zoom sur la carte
+cardContainer.addEventListener("click", (event) => {
+  if (event.target.closest(".card")) {
+    const card = event.target.closest(".card");
+    const cardName = card.querySelector("h3")?.textContent?.trim();
+    const cardImage = card.querySelector("img")?.src;
+    const cardType = card.querySelector("p:nth-child(2)")?.textContent?.trim();
+    const cardRarity = card.querySelector("p:nth-child(3)")?.textContent?.trim();
+
+    if (!cardName || !cardImage || !cardType || !cardRarity) {
+      const errorElement = document.createElement("div");
+      errorElement.classList.add("error-message");
+      errorElement.textContent = "Erreur : Impossible de récupérer les informations de la carte.";
+      const zoomedCardContainer = document.getElementById("zoomedCardContainer");
+      if (zoomedCardContainer) {
+        zoomedCardContainer.innerHTML = "";
+        zoomedCardContainer.appendChild(errorElement);
+      } else {
+        console.error("Erreur : Élément zoomedCardContainer non trouvé.");
+      }
+      return;
+    }
+
+    const zoomedCard = document.createElement("div");
+    zoomedCard.classList.add("zoomed-card");
+
+    zoomedCard.innerHTML = `
+      <img src="${cardImage}" alt="${cardName}">
+      <h2>${cardName}</h2>
+      <p>Type : ${cardType}</p>
+      <p>Rareté : ${cardRarity}</p>
+    `;
+
+    const zoomedCardContainer = document.getElementById("zoomedCardContainer");
+    if (zoomedCardContainer) {
+      zoomedCardContainer.innerHTML = "";
+      zoomedCardContainer.appendChild(zoomedCard);
+    } else {
+      console.error("Erreur : Élément zoomedCardContainer non trouvé.");
+    }
+  } else {
+    console.error("Erreur : Élément cliqué non reconnu.");
+  }
+});
+
+// Charger les cartes par défaut
 fetchCards();

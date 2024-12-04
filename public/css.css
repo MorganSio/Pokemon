@@ -110,5 +110,36 @@ input[type="text"]:focus {
   border: 1px solid #007bff;
 }
 
+.card-grid {
+  display: flex;
+  flex-wrap: wrap; /* Permet de passer à la ligne lorsque l'espace manque */
+  gap: 20px; /* Espacement entre les cartes */
+  justify-content: center; /* Centre les cartes dans la ligne */
+}
 
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+  flex: 1 1 200px; /* La carte occupe au moins 200px et s'étire si possible */
+  max-width: 300px; /* Largeur maximale pour éviter qu'elle soit trop grande */
+  transition: transform 0.2s;
+}
 
+.card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.card:hover {
+  transform: scale(1.05); /* Légère mise en valeur au survol */
+}
+
+#privateArea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

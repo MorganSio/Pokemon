@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 const API_KEY = 'd694d7b8-6ee3-4f18-aa55-4407cab4372f';
-const BASE_URL = 'https://api.pokemontcg.io/v2';
+const BASE_URL = 'https://api.pokemontcg.io/v2/cards';
 
 // Middleware pour servir les fichiers statiques
 app.use(express.static(path.join(__dirname, 'public')));

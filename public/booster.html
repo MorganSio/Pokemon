@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booster Pack Pokémon</title>
+  <link rel="stylesheet" href="css.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .card {
+      display: inline-block;
+      width: 150px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .card img {
+      max-width: 100%;
+    }
+
+    #privateArea {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #openBoosterButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #openBoosterButton:hover {
+      background-color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ouvrir un Booster Pack Pokémon</h1>
+    <button id="openBoosterButton">Ouvrir le Booster</button>
+  </header>  
+
+  <div id="privateArea">
+    <!-- Les cartes du booster pack seront affichées ici -->
+  </div>
+
+  <script>
+    // Fonction pour récupérer des cartes depuis l'API Pokémon TCG
+    async function fetchAllCards() {
+    try {
+        const response = await fetch('https://api.pokemontcg.io/v2/cards', {
+        headers: {
+            'X-Api-Key': 'ce5a3fd3-f53d-4f27-b929-2184b66a34d7',  // Utilisez votre clé API ici
+        },
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+        throw new Error(data.error || 'Erreur lors de la récupération des cartes');
+        }
+
+        return data.data;  // Retourne la liste des cartes
+    } catch (error) {
+        console.error('Erreur API:', error);
+        alert('Il y a eu une erreur lors de la récupération des cartes.');
+        return [];
+    }
+    }
+
+    // Fonction pour tirer des cartes aléatoires
+    function getRandomCards(cards, count) {
+    const randomCards = [];
+    while (randomCards.length < count) {
+        const randomIndex = Math.floor(Math.random() * cards.length);
+        if (!randomCards.includes(cards[randomIndex])) {
+        randomCards.push(cards[randomIndex]);
+        }
+    }
+    return randomCards;
+    }
+
+    // Fonction pour récupérer une carte spéciale (rare ou secrète)
+    function getSpecialCard(cards) {
+    const rareCards = cards.filter(card => card.rarity === "Rare" || card.rarity === "Ultra Rare" || card.rarity === "Secret Rare");
+    return rareCards[Math.floor(Math.random() * rareCards.length)];
+    }
+
+    // Fonction pour afficher les cartes dans l'espace privé
+    function displayBoosterPack(cards) {
+    const privateArea = document.getElementById("privateArea");
+    privateArea.innerHTML = "";  // Vide l'espace avant d'ajouter les nouvelles cartes
+
+    cards.forEach(card => {
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+
+        cardElement.innerHTML = `
+        <img src="${card.images.small}" alt="${card.name}">
+        <h3>${card.name}</h3>
+        <p>Rareté: ${card.rarity || "Non spécifiée"}</p>
+        <p>Type(s): ${card.types ? card.types.join(", ") : "Inconnu"}</p>
+        `;
+        privateArea.appendChild(cardElement);
+    });
+    }
+
+    // Fonction pour ouvrir un booster (tirer des cartes et les afficher)
+    async function openBoosterPack() {
+    const cards = await fetchAllCards();  // Récupère toutes les cartes
+    if (cards.length === 0) return; // Si aucune carte n'est récupérée, on arrête la fonction.
+
+    const selectedCards = getRandomCards(cards, 4);  // Tire 4 cartes aléatoires
+
+    // Ajouter une carte spéciale parmi les cartes rares
+    const specialCard = getSpecialCard(cards);  // Récupère une carte spéciale
+    selectedCards.push(specialCard);  // Ajoute la carte spéciale aux cartes sélectionnées
+
+    displayBoosterPack(selectedCards);  // Affiche le booster pack sur la page
+    }
+
+    // Ajoute un écouteur d'événements au bouton pour ouvrir le booster
+    document.getElementById("openBoosterButton").addEventListener("click", openBoosterPack);
+  </script>
+</body>
+</html>
