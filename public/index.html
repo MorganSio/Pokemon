@@ -1,28 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pokémon TCG Explorer</title>
+  <title>Accueil - Pokémon TCG App</title>
   <link rel="stylesheet" href="css.css">
 </head>
 <body>
   <header>
-    <h1>Pokémon TCG Explorer</h1>
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="Rechercher une carte (ex: Pikachu)">
-      <button id="searchButton">Rechercher</button>
-    </div>
+    <h1>Pokémon TCG App</h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="search.html">Rechercher une carte</a></li>
+        <li><a href="booster.html">Ouvrir un booster</a></li>
+        <li><a href="collection.html">Ma collection</a></li>
+        <li><a href="https://www.pokepedia.fr/Liste_des_Pok%C3%A9mon_dans_l'ordre_du_Pok%C3%A9dex_National">Pokedex</a></li>
+      </ul>
+    </nav>
   </header>
   <main>
-    <section id="cards">
-      <h2>Cartes Pokémon</h2>
-      <div id="cardContainer" class="card-grid"></div>
+    <section class="welcome-section">
+      <h2>Bienvenue sur Pokémon TCG App</h2>
+      <p>Explorez les cartes Pokémon, ouvrez des boosters, gérez votre collection et bien plus encore !</p>
+      <p>Utilisez le menu ci-dessus pour naviguer entre les différentes sections.</p>
+      <p>ATTENTION ! Le nombre de requêtes vers l'api de pokemon reste limitée.</p>
+      <p>Si ce que vous avez demandé ne s'éxécute pas dans la seconde, revenez dans 30 secondes.</p>
     </section>
   </main>
   <footer>
     <p>Créé avec l'API Pokémon TCG</p>
   </footer>
-  <script type="module" src="script.js"></script>
 </body>
 </html>

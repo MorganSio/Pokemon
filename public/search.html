@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon TCG Explorer</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <header>
+    <h1>Recherche Cartes Pokémon</h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="search.html">Rechercher une carte</a></li>
+        <li><a href="booster.html">Ouvrir un booster</a></li>
+        <li><a href="collection.html">Ma collection</a></li>
+        <li><a href="https://www.pokepedia.fr/Liste_des_Pok%C3%A9mon_dans_l'ordre_du_Pok%C3%A9dex_National">Pokedex</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div id="breadcrumb">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="search.html">Rechercher une carte</a></li>
+      <li id="breadcrumb-current">Cartes Pokémon</li>
+    </ol>
+  </div>
+  <header id="header-search">
+    <h1>Pokémon TCG Explorer</h1>
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Rechercher une carte (ex: Pikachu)">
+      <button id="searchButton">Rechercher</button>
+    </div>
+    
+    <!-- Ajout de la section de tri -->
+    <section id="sortOptions">
+      <label for="sortCategory">Trier par :</label>
+      <select id="sortCategory">
+        <option value="name">Nom</option>
+        <option value="rarity">Rareté</option>
+        <option value="type">Type</option>
+      </select>
+      
+      <label for="sortOrder">Ordre :</label>
+      <select id="sortOrder">
+        <option value="asc">Ascendant</option>
+        <option value="desc">Descendant</option>
+      </select>
+      
+      <button id="sortButton">Trier</button>
+    </section>
+  </header>
+  <main>
+    <section id="cards">
+      <h2>Cartes Pokémon</h2>
+      <div id="cardContainer" class="card-grid"></div>
+    </section>
+  </main>
+  <footer>
+    <p>Créé avec l'API Pokémon TCG</p>
+  </footer>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
