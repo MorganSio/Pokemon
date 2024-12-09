@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon TCG Explorer</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+  <header>
+    <h1>Collection Cartes Pokémon</h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="search.html">Rechercher une carte</a></li>
+        <li><a href="booster.html">Ouvrir un booster</a></li>
+        <li><a href="collection.html">Ma collection</a></li>
+        <li><a href="https://www.pokepedia.fr/Liste_des_Pok%C3%A9mon_dans_l'ordre_du_Pok%C3%A9dex_National">Pokedex</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div id="breadcrumb">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="collection.html">Collection</a></li>
+      <li id="breadcrumb-current">Cartes Pokémon</li>
+    </ol>
+  </div>
+  <header id="header-search">
+    <h1>Pokémon TCG Collection</h1>
+    <section id="sortOptions">
+      <label for="searchCategory">Chercher par :</label>
+      <select id="searchCategory">
+        <option value="global">Recherche Globale</option>
+        <option value="rarity">Rareté</option>
+        <option value="type">Type</option>
+      </select>
+      
+      <label for="raritySelect">Rareté :</label>
+      <select id="raritySelect" disabled>
+        <option value="">Sélectionnez une rareté</option>
+        <option value="Common">Common</option>
+        <option value="Uncommon">Uncommon</option>
+        <option value="Rare">Rare</option>
+        <option value="Rare Shining">Rare Shining</option>
+        <option value="Illustration Rare">Illustration Rare</option>
+        <option value="Shiny Rare">Shiny Rare</option>
+        <option value="Classic Collection">Classic Collection</option>
+        <option value="Rare VSTAR">Rare VSTAR</option>
+        <option value="Radiant Rare">Radiant Rare</option>
+        <option value="Trainer Gallery Rare Holo">Trainer Gallery Rare Holo</option>
+        <option value="Rare Holo">Rare Holo</option>
+        <option value="Rare Holo V">Rare Holo V</option>
+        <option value="Rare Holo EX">Rare Holo EX</option>
+        <option value="Ultra Rare">Ultra Rare</option>
+        <option value="Rare Holo Star">Rare Holo Star</option>
+        <option value="Rare Holo VSTAR">Rare Holo VSTAR</option>
+        <option value="Promo">Promo</option>
+        <option value="Rare Secret">Rare Secret</option>
+        <option value="Rare Holo GX">Rare Holo GX</option>
+        <option value="Rare Holo VMAX">Rare Holo VMAX</option>
+        <option value="Secret Rare">Secret Rare</option>
+        <option value="Rare Shiny GX">Rare Shiny GX</option>
+        <option value="Rare Holo LV.X">Rare Holo LV.X</option>
+        <option value="Double Rare">Double Rare</option>
+        <option value="Special Illustration Rare">Special Illustration Rare</option>
+        <option value="Hyper Rare">Hyper Rare</option>
+        <option value="Rare Ultra">Rare Ultra</option>
+        <option value="Rare Rainbow">Rare Rainbow</option>
+        <option value="Non spécifiée">Non spécifiée</option>
+      </select>
+
+      <label for="typeSelect">Type :</label>
+      <select id="typeSelect" disabled>
+        <option value="">Sélectionnez un type</option>
+        <option value="Fire">Feu</option>
+        <option value="Water">Eau</option>
+        <option value="Grass">Plante</option>
+        <option value="Lightning">Electrique</option>
+        <option value="Psychic">Psy</option>
+        <option value="Fighting">Combat</option>
+        <option value="Darkness">Ténèbres</option>
+        <option value="Colorless">Incolore</option>
+        <option value="Metal">Métal</option>
+        <option value="Dragon">Dragon</option>
+      </select>
+
+      <button id="searchButton">Rechercher</button>
+    </section>
+    <section id="sortOptions">
+      <label for="sortCategory">Trier par :</label>
+      <select id="sortCategory">
+        <option value="name">Nom</option>
+        <option value="rarity">Rareté</option>
+        <option value="type">Type</option>
+      </select>
+      
+      <label for="sortOrder">Ordre :</label>
+      <select id="sortOrder">
+        <option value="asc">Ascendant</option>
+        <option value="desc">Descendant</option>
+      </select>
+      
+      <button id="sortButton">Trier</button>
+    </section>
+  </header>
+  <main>
+    <section id="cards">
+      <h2>Cartes Pokémon</h2>
+      <div id="cardContainer" class="card-grid"></div>
+    </section>
+  </main>
+  <footer>
+    <p>Créé avec l'API Pokémon TCG</p>
+  </footer>
+  <script>
+    const dbName = "pokemonCollection";
+    const dbVersion = 1;
+
+    let db;
+
+    // Ouvrir ou créer la base de données
+    const openRequest = indexedDB.open(dbName, dbVersion);
+
+    openRequest.onupgradeneeded = (event) => {
+        db = event.target.result;
+        console.log("Base de données mise à jour ou créée");
+
+        // Création du magasin d'objets "cards" si nécessaire
+        if (!db.objectStoreNames.contains("cards")) {
+            db.createObjectStore("cards", { keyPath: "id" });  // "id" est la clé primaire
+        }
+    };
+
+    openRequest.onsuccess = (event) => {
+        db = event.target.result;
+        console.log("Base de données connectée :", dbName);
+        loadCollectionFromDB();  // Charger la collection depuis IndexedDB
+    };
+
+    openRequest.onerror = (event) => {
+        console.error("Erreur lors de l'ouverture de la base de données :", event.target.error);
+    };
+
+    // Fonction pour charger la collection depuis IndexedDB
+    function loadCollectionFromDB() {
+        const transaction = db.transaction(['cards'], 'readonly');
+        const store = transaction.objectStore('cards');
+        const request = store.getAll();
+
+        request.onsuccess = async () => {
+            const cardIDs = request.result.map(card => card.id);
+            console.log("IDs récupérés :", cardIDs);
+
+            if (cardIDs.length === 0) {
+                document.getElementById("cardContainer").innerHTML = "<p>Votre collection est vide.</p>";
+                return;
+            }
+
+            // Récupérer les données des cartes depuis l'API Pokémon TCG
+            const cards = await fetchCardsFromAPI(cardIDs);
+            displayFilteredCards(cards);
+        };
+
+        request.onerror = (event) => {
+            console.error("Erreur lors de la lecture des IDs :", event.target.error);
+        };
+    }
+
+    // Fonction pour récupérer les cartes depuis l'API Pokémon TCG avec gestion des erreurs
+    function fetchCardsFromAPI(cardIds) {
+        let index = 0;
+        const delay = 1000; // 1 seconde de délai entre les requêtes
+
+        function fetchNextCard() {
+            if (index < cardIds.length) {
+                fetch(`https://api.pokemontcg.io/v2/cards/${cardIds[index]}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Traitement des données
+                    })
+                    .catch(error => console.error('Erreur de récupération de la carte:', error));
+                
+                index++;
+                setTimeout(fetchNextCard, delay);  // Appel de la fonction après un délai
+            }
+        }
+
+        fetchNextCard();  // Initialiser le processus
+    }
+
+    // Fonction de filtrage des cartes
+    function displayFilteredCards(cards) {
+        if (!cards) return; // Ajouter une vérification pour éviter l'erreur
+
+        // Récupérer les valeurs de recherche
+        const searchCategory = document.getElementById("searchCategory").value;
+        const rarity = document.getElementById("raritySelect").value;
+        const type = document.getElementById("typeSelect").value;
+
+        let filteredCards = cards;
+
+        // Appliquer les filtres
+        if (searchCategory === 'rarity' && rarity) {
+            filteredCards = filteredCards.filter(card => card.rarity === rarity);
+        } else if (searchCategory === 'type' && type) {
+            filteredCards = filteredCards.filter(card => card.types && card.types.includes(type));
+        }
+
+        // Affichage des cartes
+        const cardContainer = document.getElementById("cardContainer");
+        cardContainer.innerHTML = ""
+
+        if (!filteredCards || filteredCards.length === 0) {
+            cardContainer.innerHTML = "<p>Aucune carte ne correspond à votre recherche.</p>";
+            return;
+        }
+
+        // Afficher les cartes filtrées
+        filteredCards.forEach(card => {
+            const cardElement = document.createElement("div");
+            cardElement.classList.add("card");
+
+            cardElement.innerHTML = `
+                <img src="${card.images.small}" alt="${card.name}">
+                <h3>${card.name}</h3>
+                <p>Type : ${card.types ? card.types.join(", ") : "Inconnu"}</p>
+                <p>Rareté : ${card.rarity || "Non spécifiée"}</p>
+            `;
+
+            cardContainer.appendChild(cardElement);
+        });
+    }
+
+    // Ajout d'un écouteur d'événements pour le bouton de recherche
+    document.getElementById("searchButton").addEventListener("click", function() {
+        loadCollectionFromDB();
+    });
+
+    // Activer/Désactiver les options de filtrage selon la catégorie sélectionnée
+    document.getElementById("searchCategory").addEventListener("change", function() {
+        const category = this.value;
+        const raritySelect = document.getElementById("raritySelect");
+        const typeSelect = document.getElementById("typeSelect");
+
+        if (category === "rarity") {
+            raritySelect.disabled = false;
+            typeSelect.disabled = true;
+        } else if (category === "type") {
+            raritySelect.disabled = true;
+            typeSelect.disabled = false;
+        } else {
+            raritySelect.disabled = true;
+            typeSelect.disabled = true;
+        }
+    });
+
+    // Fonction pour trier les cartes
+    function sortCollection(cards, category, order) {
+      return cards.sort((a, b) => {
+        let valueA, valueB;
+
+        if (category === "name") {
+          valueA = a.name.toLowerCase();
+          valueB = b.name.toLowerCase();
+        } else if (category === "rarity") {
+          const rarityOrder = {
+            "Common": 1,
+            "Uncommon": 2,
+            "Rare": 3,
+            "Rare Shining": 4,
+            "Illustration Rare": 5,
+            "Shiny Rare": 6,
+            "Rare Holo": 7,
+            "Promo": 8,
+            "Classic Collection": 9,
+            "Rare VSTAR": 10,
+            "Radiant Rare": 11,
+            "Trainer Gallery Rare Holo": 12,
+            "Rare Holo V": 13,
+            "Rare Holo EX": 14,
+            "Ultra Rare": 15,
+            "Rare Holo Star": 16,
+            "Rare Holo VSTAR": 17,
+            "Rare Secret": 18,
+            "Rare Holo GX": 19,
+            "Rare Holo VMAX": 20,
+            "Secret Rare": 21,
+            "Rare Shiny GX": 22,
+            "Rare Holo Star": 23,
+            "Rare Holo LV.X": 24,
+            "Double Rare": 25,
+            "Special Illustration Rare": 26,
+            "Hyper Rare": 27,
+            "Rare Ultra": 28,
+            "Rare Rainbow": 29,
+            "Non spécifiée": 0
+          };
+
+          const getRarityRank = (rarity) => {
+            return rarityOrder[rarity] || 0;
+          };
+
+          valueA = getRarityRank(a.rarity);
+          valueB = getRarityRank(b.rarity);
+        } else if (category === "type") {
+          valueA = a.types ? a.types[0].toLowerCase() : "";
+          valueB = b.types ? b.types[0].toLowerCase() : "";
+        } else {
+          return 0;
+        }
+
+        if (valueA < valueB) return order === "asc" ? -1 : 1;
+        if (valueA > valueB) return order === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+
+    async function loadSearchResults() {
+        const searchCategory = document.getElementById("searchCategory").value;
+        const rarity = document.getElementById("raritySelect").value;
+        const type = document.getElementById("typeSelect").value;
+
+        // Charger toutes les cartes depuis IndexedDB
+        const transaction = db.transaction(['cards'], 'readonly');
+        const store = transaction.objectStore('cards');
+        const request = store.getAll();
+
+        request.onsuccess = async () => {
+            let cards = request.result;
+
+            // Appliquer le filtrage
+            if (searchCategory === "rarity" && rarity) {
+                cards = cards.filter(card => card.rarity === rarity);
+            } else if (searchCategory === "type" && type) {
+                cards = cards.filter(card => card.types && card.types.includes(type));
+            }
+
+            // Récupérer les options de tri
+            const sortCategory = document.getElementById("sortCategory").value;
+            const sortOrder = document.getElementById("sortOrder").value;
+
+            // Trier les cartes
+            const sortedCards = sortCollection(cards, sortCategory, sortOrder);
+
+            // Afficher les cartes triées
+            displayFilteredCards(sortedCards);
+        };
+
+        request.onerror = (event) => {
+            console.error("Erreur lors du chargement des cartes depuis IndexedDB :", event.target.error);
+        };
+    }
+
+    // Ajouter un écouteur d'événements pour la recherche et le tri
+    searchButton.addEventListener("click", loadSearchResults);
+    document.getElementById("sortButton").addEventListener("click", loadSearchResults);
+    // Initialiser les catégories de recherche
+    document.getElementById("searchCategory").dispatchEvent(new Event("change"));
+  </script>
+</body>
+</html>

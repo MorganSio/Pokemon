@@ -6,131 +6,430 @@
   <title>Booster Pack Pokémon</title>
   <link rel="stylesheet" href="css.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
 
-    .card {
-      display: inline-block;
-      width: 150px;
-      margin: 10px;
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
+  .booster-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+  }
 
-    .card img {
-      max-width: 100%;
-    }
+  .booster {
+    width: 30%;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.3s, border-color 0.3s;
+  }
 
-    #privateArea {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+  .booster:hover {
+    transform: scale(1.05);
+    border-color: #007bff;
+  }
 
-    #openBoosterButton {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin: 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+  .booster img {
+    width: 100%;
+    border-radius: 8px;
+  }
 
-    #openBoosterButton:hover {
-      background-color: #007bff;
-    }
+  .booster h3 {
+    margin: 10px 0 0;
+    font-size: 16px;
+  }
+
+  .remaining {
+    font-size: 14px;
+    color: #555;
+  }
+
+  #privateArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .card {
+    display: inline-block;
+    width: 14%;
+    margin: 1%;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .card img {
+    max-width: 100%;
+  }
   </style>
 </head>
 <body>
   <header>
     <h1>Ouvrir un Booster Pack Pokémon</h1>
-    <button id="openBoosterButton">Ouvrir le Booster</button>
-  </header>  
-
-  <div id="privateArea">
-    <!-- Les cartes du booster pack seront affichées ici -->
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="search.html">Rechercher une carte</a></li>
+        <li><a href="booster.html">Ouvrir un booster</a></li>
+        <li><a href="collection.html">Ma collection</a></li>
+        <li><a href="https://www.pokepedia.fr/Liste_des_Pok%C3%A9mon_dans_l'ordre_du_Pok%C3%A9dex_National">Pokedex</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div id="breadcrumb">
+    <ol>
+      <li><a href="index.html">Accueil</a></li>
+      <li id="breadcrumb-current">Booster Pokémon</li>
+    </ol>
   </div>
-
+  <header id="header-search">
+    <h1>Pokémon TCG Booster</h1>
+  </header>
+  <main>
+    <div class="booster-container">
+      <div class="booster" data-type="fire">
+        <img src="images/feu.jpg" alt="Booster Feu">
+        <h3>Booster Feu</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="water">
+        <img src="images/eau.jpg" alt="Booster Eau">
+        <h3>Booster Eau</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="grass">
+        <img src="images/plante.jpg" alt="Booster Plante">
+        <h3>Booster Plante</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="lightning">
+        <img src="images/elec.jpg" alt="Booster Électrique">
+        <h3>Booster Électrique</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="psychic">
+        <img src="images/psy.jpg" alt="Booster Psy">
+        <h3>Booster Psy</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="fighting">
+        <img src="images/combat.jpg" alt="Booster Combat">
+        <h3>Booster Combat</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="darkness">
+        <img src="images/dark.jpg" alt="Booster Ténèbres">
+        <h3>Booster Ténèbres</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="colorless">
+        <img src="images/incolore.jpg" alt="Booster Incolore">
+        <h3>Booster Incolore</h3>
+        <p class="remaining">Limites restantes : 3</p>
+      </div>
+      <div class="booster" data-type="random">
+          <img src="images/random.jpg" alt="Booster Aléatoire">
+          <h3>Booster Aléatoire</h3>
+          <p class="remaining">Limites restantes : 10</p>
+      </div>
+    </div>
+    <div id="privateArea">
+      <!-- Les cartes du booster pack seront affichées ici -->
+    </div>
+  </main>
   <script>
-    // Fonction pour récupérer des cartes depuis l'API Pokémon TCG
-    async function fetchAllCards() {
-    try {
-        const response = await fetch('https://api.pokemontcg.io/v2/cards', {
-        headers: {
-            'X-Api-Key': 'ce5a3fd3-f53d-4f27-b929-2184b66a34d7',  // Utilisez votre clé API ici
-        },
+      const dbName = "pokemonCollection";
+      const dbVersion = 1;
+      let db;
+
+      // Ouvrir ou créer la base de données IndexedDB
+      const openRequest = indexedDB.open(dbName, dbVersion);
+
+      openRequest.onupgradeneeded = (event) => {
+          db = event.target.result;
+
+          // Vérifier si le store "cards" existe déjà, sinon créer le store
+          if (!db.objectStoreNames.contains("cards")) {
+              const store = db.createObjectStore("cards", { keyPath: "id" });
+              console.log("Object store 'cards' créé !");
+          }
+      };
+
+      openRequest.onsuccess = (event) => {
+          db = event.target.result;
+          console.log("Base de données connectée :", dbName);
+      };
+
+      openRequest.onerror = (event) => {
+          console.error("Erreur lors de l'ouverture de la base de données :", event.target.error);
+      };
+
+      // Fonction pour sauvegarder des cartes dans IndexedDB
+      function saveCardsToDB(cards) {
+        cards.forEach(card => {
+            const transaction = db.transaction(['cards'], 'readwrite');
+            const store = transaction.objectStore('cards');
+
+            const request = store.get(card.id); // Vérifie si la carte existe déjà
+
+            request.onsuccess = () => {
+                if (request.result) {
+                    console.log(`Carte déjà existante dans la base de données : ${card.id}`);
+                } else {
+                    const addRequest = store.add(card);
+                    addRequest.onsuccess = () => {
+                        console.log(`Carte ajoutée à la base de données : ${card.id}`);
+                    };
+                    addRequest.onerror = (event) => {
+                        console.error(`Erreur lors de l'ajout de la carte ${card.id} :`, event.target.error);
+                    };
+                }
+            };
+
+            request.onerror = (event) => {
+                console.error(`Erreur lors de la vérification de la carte ${card.id} :`, event.target.error);
+            };
         });
+      }
 
-        const data = await response.json();
-        if (!response.ok) {
-        throw new Error(data.error || 'Erreur lors de la récupération des cartes');
-        }
 
-        return data.data;  // Retourne la liste des cartes
-    } catch (error) {
-        console.error('Erreur API:', error);
-        alert('Il y a eu une erreur lors de la récupération des cartes.');
-        return [];
-    }
-    }
+      // Fonction pour récupérer des cartes depuis l'API Pokémon TCG
+      async function fetchAllCards() {
+          try {
+              const response = await fetch('https://api.pokemontcg.io/v2/cards', {
+                  headers: {
+                      'X-Api-Key': 'ce5a3fd3-f53d-4f27-b929-2184b66a34d7',  // Utilisez votre clé API ici
+                  },
+              });
 
-    // Fonction pour tirer des cartes aléatoires
-    function getRandomCards(cards, count) {
-    const randomCards = [];
-    while (randomCards.length < count) {
-        const randomIndex = Math.floor(Math.random() * cards.length);
-        if (!randomCards.includes(cards[randomIndex])) {
-        randomCards.push(cards[randomIndex]);
-        }
-    }
-    return randomCards;
-    }
+              const data = await response.json();
+              if (!response.ok) {
+                  throw new Error(data.error || 'Erreur lors de la récupération des cartes');
+              }
 
-    // Fonction pour récupérer une carte spéciale (rare ou secrète)
-    function getSpecialCard(cards) {
-    const rareCards = cards.filter(card => card.rarity === "Rare" || card.rarity === "Ultra Rare" || card.rarity === "Secret Rare");
-    return rareCards[Math.floor(Math.random() * rareCards.length)];
-    }
+              return data.data;  // Retourne la liste des cartes
+          } catch (error) {
+              console.error('Erreur API:', error);
+              alert('Il y a eu une erreur lors de la récupération des cartes.');
+              return [];
+          }
+      }
 
-    // Fonction pour afficher les cartes dans l'espace privé
-    function displayBoosterPack(cards) {
-    const privateArea = document.getElementById("privateArea");
-    privateArea.innerHTML = "";  // Vide l'espace avant d'ajouter les nouvelles cartes
+      function filterCardsByType(cards, type) {
+          return cards.filter(card => card.types?.includes(type.charAt(0).toUpperCase() + type.slice(1)));
+      }
 
-    cards.forEach(card => {
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("card");
+      function getRandomCards(cards, count) {
+          const selected = [];
+          while (selected.length < count) {
+              const randomIndex = Math.floor(Math.random() * cards.length);
+              if (!selected.includes(cards[randomIndex])) selected.push(cards[randomIndex]);
+          }
+          return selected;
+      }
 
-        cardElement.innerHTML = `
-        <img src="${card.images.small}" alt="${card.name}">
-        <h3>${card.name}</h3>
-        <p>Rareté: ${card.rarity || "Non spécifiée"}</p>
-        <p>Type(s): ${card.types ? card.types.join(", ") : "Inconnu"}</p>
-        `;
-        privateArea.appendChild(cardElement);
-    });
-    }
+      // Fonction pour récupérer des cartes aléatoires de types différents
+      function getRandomCardsOfDifferentTypes(cards, count) {
+          const selectedCards = [];
+          const usedTypes = new Set(); // Utilise un Set pour suivre les types déjà choisis
 
-    // Fonction pour ouvrir un booster (tirer des cartes et les afficher)
-    async function openBoosterPack() {
-    const cards = await fetchAllCards();  // Récupère toutes les cartes
-    if (cards.length === 0) return; // Si aucune carte n'est récupérée, on arrête la fonction.
+          while (selectedCards.length < count) {
+              const randomIndex = Math.floor(Math.random() * cards.length);
+              const card = cards[randomIndex];
+              const cardTypes = card.types || []; // Assurez-vous que la carte a des types
 
-    const selectedCards = getRandomCards(cards, 4);  // Tire 4 cartes aléatoires
+              // Si la carte a un type que nous n'avons pas encore utilisé, on l'ajoute
+              const newTypes = cardTypes.filter(type => !usedTypes.has(type));
 
-    // Ajouter une carte spéciale parmi les cartes rares
-    const specialCard = getSpecialCard(cards);  // Récupère une carte spéciale
-    selectedCards.push(specialCard);  // Ajoute la carte spéciale aux cartes sélectionnées
+              if (newTypes.length > 0) {
+                  // On sélectionne la carte et on ajoute ses types au Set
+                  selectedCards.push(card);
+                  newTypes.forEach(type => usedTypes.add(type));
+              }
+          }
 
-    displayBoosterPack(selectedCards);  // Affiche le booster pack sur la page
-    }
+          return selectedCards;
+      }
 
-    // Ajoute un écouteur d'événements au bouton pour ouvrir le booster
-    document.getElementById("openBoosterButton").addEventListener("click", openBoosterPack);
+      function displayBoosterPack(cards) {
+          const privateArea = document.getElementById("privateArea");
+          privateArea.innerHTML = "";
+          cards.forEach(card => {
+              const cardElement = document.createElement("div");
+              cardElement.classList.add("card");
+              cardElement.innerHTML = `
+                  <img src="${card.images.small}" alt="${card.name}">
+                  <h3>${card.name}</h3>
+                  <p>Rareté: ${card.rarity || "Non spécifiée"}</p>
+                  <p>Type(s): ${card.types ? card.types.join(", ") : "Inconnu"}</p>
+              `;
+              privateArea.appendChild(cardElement);
+          });
+      }
+
+      // Fonction pour récupérer des cartes spéciales (EX, GX, V, etc.)
+      function isSpecialCard(card) {
+          const specialRarities = ["Rare Shining", "Illustration Rare", "Shiny Rare", "Classic Collection", 
+          "Rare VSTAR", "Radiant Rare", "Trainer Gallery Rare Holo", "Rare Holo V", "Rare Holo EX", 
+          "Ultra Rare", "Rare Holo Star", "Rare Holo VSTAR", "Promo", "Rare Secret", "Rare Holo GX", "Rare Holo VMAX", 
+          "Secret Rare", "Rare Shiny GX", "Rare Holo LV.X", "Double Rare", "Special Illustration Rare", "Hyper Rare", 
+          "Rare Ultra", "Rare Rainbow"];
+          return specialRarities.includes(card.rarity);
+      }
+
+      // Fonction pour récupérer des cartes rares avec des probabilités
+      function getRandomCardsWithProbabilities(cards, count) {
+          const selected = [];
+          const specialCards = cards.filter(isSpecialCard); // Cartes spéciales
+          const regularCards = cards.filter(card => !isSpecialCard(card)); // Cartes normales
+
+          while (selected.length < count) {
+              // Tirage pour déterminer la probabilité de la carte
+              const randomChance = Math.random();
+              
+              if (randomChance < 0.3 && specialCards.length > 0) {
+                  // 50 % de chance de sélectionner une carte spéciale
+                  const randomSpecialCard = specialCards[Math.floor(Math.random() * specialCards.length)];
+                  selected.push(randomSpecialCard);
+              } else if (randomChance < 0.7 && regularCards.length > 0) {
+                  // 10 % de chance de sélectionner une carte rare spécifique
+                  const randomRegularCard = regularCards[Math.floor(Math.random() * regularCards.length)];
+                  selected.push(randomRegularCard);
+              } else if (regularCards.length > 0) {
+                  // Sinon, sélectionne une carte régulière
+                  const randomRegularCard = regularCards[Math.floor(Math.random() * regularCards.length)];
+                  selected.push(randomRegularCard);
+              }
+          }
+
+          return selected;
+      }
+
+      const today = new Date().toLocaleDateString();
+      const boosterLimits = {
+          fire: 3,
+          water: 3,
+          grass: 3,
+          lightning: 3,
+          psychic: 3,
+          fighting: 3,
+          darkness: 3,
+          colorless: 3,
+          random: 10,
+      };
+
+      /*localStorage.setItem(
+          'boosterDailyLimits',
+          JSON.stringify({ date: today, counts: boosterLimits })
+      );*/
+
+      function initializeDailyLimits() {
+          const today = new Date().toLocaleDateString();
+          const savedData = JSON.parse(localStorage.getItem('boosterDailyLimits')) || {};
+
+          // Ajout d'un log pour diagnostiquer
+          console.log("Données existantes dans localStorage :", savedData);
+
+          // Si les données ne correspondent pas à aujourd'hui, réinitialiser
+          if (savedData.date !== today || !savedData.counts) {
+              const freshLimits = { ...boosterLimits };
+              localStorage.setItem(
+                  'boosterDailyLimits',
+                  JSON.stringify({ date: today, counts: freshLimits })
+              );
+              return freshLimits;
+          }
+
+          // Vérifier que chaque type a une limite correcte
+          Object.keys(boosterLimits).forEach(type => {
+              if (!savedData.counts.hasOwnProperty(type) || typeof savedData.counts[type] !== 'number') {
+                  savedData.counts[type] = boosterLimits[type];
+              }
+          });
+
+          // Mettre à jour localStorage avec les corrections
+          localStorage.setItem('boosterDailyLimits', JSON.stringify(savedData));
+          return savedData.counts;
+      }
+
+      let dailyLimits = initializeDailyLimits();
+
+      // Met à jour les ouvertures restantes dans l'interface
+      function updateRemainingBoosterCounts() {
+          console.log("Limites quotidiennes actuelles :", dailyLimits); // Log pour vérifier les données
+
+          document.querySelectorAll('.booster').forEach(booster => {
+              const type = booster.getAttribute('data-type');
+              const remainingElement = booster.querySelector('.remaining');
+              remainingElement.textContent = dailyLimits[type] || 0;
+          });
+      }
+
+      // Vérifie si un booster peut être ouvert
+      function canOpenBooster(type) {
+          if (dailyLimits[type] > 0) {
+              dailyLimits[type]--;
+              localStorage.setItem(
+                  'boosterDailyLimits',
+                  JSON.stringify({ date: new Date().toLocaleDateString(), counts: dailyLimits })
+              );
+              return true;
+          } else {
+              alert(`La limite quotidienne pour le booster ${type} est atteinte.`);
+              return false;
+          }
+      }
+
+      // Modifiez la fonction `openBooster` pour inclure la vérification
+      async function openBooster(type) {
+          if (!canOpenBooster(type)) return;
+
+          const allCards = await fetchAllCards();
+          console.log("Toutes les cartes récupérées :", allCards); // Log des cartes récupérées
+
+          if (allCards.length === 0) return;
+
+          let selectedCards = [];
+          if (type === "random") {
+              selectedCards = getRandomCardsWithProbabilities(allCards, 5);
+          } else {
+              const filteredCards = filterCardsByType(allCards, type);
+              console.log(`Cartes filtrées pour le type ${type} :`, filteredCards); // Log des cartes filtrées
+
+              if (filteredCards.length === 0) {
+                  alert(`Aucune carte de type ${type} n'a été trouvée. Veuillez réessayer ou choisir un autre booster.`);
+                  return;
+              }
+              selectedCards = getRandomCards(filteredCards, 5);
+          }
+
+          console.log("Cartes sélectionnées :", selectedCards); // Log des cartes sélectionnées
+          displayBoosterPack(selectedCards);
+          saveCardsToDB(selectedCards);
+          updateRemainingBoosterCounts();
+          const privateArea = document.getElementById("footer");
+          privateArea.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Initialiser l'affichage des limites
+      updateRemainingBoosterCounts();
+
+
+      // Événement pour le clic sur le booster aléatoire
+      document.querySelectorAll(".booster, .random-booster").forEach(booster => {
+          booster.addEventListener("click", () => {
+              const type = booster.classList.contains("random-booster") ? "random" : booster.getAttribute("data-type");
+              openBooster(type);
+          });
+      });
   </script>
+  <footer id="footer">
+    <p>Créé avec l'API Pokémon TCG</p>
+  </footer>
 </body>
 </html>

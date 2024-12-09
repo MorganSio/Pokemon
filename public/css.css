@@ -1,15 +1,148 @@
-body {
-  font-family: Arial, sans-serif;
+/* Réinitialisation */
+body, h1, h2, p, ul, li, a {
   margin: 0;
   padding: 0;
-  background-color: #f7f7f7;
-  color: #333;
+  box-sizing: border-box;
 }
 
+/* Corps de la page */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #ffffff;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* En-tête */
 header {
-  background-color: #ffcc00;
-  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 1rem 2rem;
   text-align: center;
+}
+
+header h1 {
+  margin-bottom: 0.5rem;
+}
+
+nav ul.menu {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+nav ul.menu li a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: 2px solid transparent;
+  transition: 0.3s;
+}
+
+nav ul.menu li a:hover {
+  background-color: white;
+  color: #4CAF50;
+  border-color: #4CAF50;
+  border-radius: 5px;
+}
+
+/* Section d'accueil */
+main .welcome-section {
+  text-align: center;
+  padding: 2rem 1rem;
+  flex-grow: 1;
+}
+
+main .welcome-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #4CAF50;
+}
+
+main .welcome-section p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+/* Pied de page */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+
+/* Fil d'Ariane */
+#breadcrumb {
+  background-color: #4CAF50;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: white;
+  margin-top: 1px; /* Ajustez pour éviter l'overlap avec le header */
+  margin-bottom: 1px;
+  position: relative;
+}
+
+#breadcrumb ol {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+#breadcrumb ol li {
+  margin-right: 10px;
+}
+
+#breadcrumb ol li::after {
+  content: ">";
+  margin-left: 10px;
+}
+
+#breadcrumb ol li:last-child::after {
+  content: "";
+}
+
+#breadcrumb a {
+  text-decoration: none;
+  color: #fff;
+}
+
+#breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+#breadcrumb-current {
+  font-weight: bold;
+  color: #ddd;
+}
+
+/* Séparateurs entre les sections */
+section {
+  margin: 40px 0;
+  padding: 20px;
+  border-top: 2px solid #ddd;
+  border-bottom: 2px solid #ddd;
+}
+
+section h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
 header h1 {
@@ -142,4 +275,87 @@ input[type="text"]:focus {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.card {
+  display: inline-block;
+  width: 150px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.card img {
+  max-width: 100%;
+}
+
+#privateArea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#openBoosterButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#openBoosterButton:hover {
+  background-color: #007bff;
+}
+
+#pokemon-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+.pokemon {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+#sortOptions {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#sortOptions label {
+  margin-right: 10px;
+}
+
+#sortOptions select {
+  margin-right: 20px;
+  padding: 5px;
+}
+
+#sortButton {
+  padding: 5px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#sortButton:hover {
+  background-color: #0056b3;
+}
+
+#header-search{
+  background-color: #c11717;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
 }
